@@ -9,7 +9,7 @@ namespace Task2
 {
     internal class Program
     {
-
+        delegate int[] ForMet(int[] array, int k);
         static void Main(string[] args)
         {
             Console.WriteLine("Введіть коефіцієнт:");
@@ -26,12 +26,15 @@ namespace Task2
                     break;
                 case 1: InputArray(ref array);
                     break;
-                default: Console.WriteLine("");
+                default: Console.WriteLine("Помилочка");
                     break;
             }
-            int[] array2 = OwnMethod(array, k);
-            PrintArray(array2);
-
+            ForMet coolMethodDelegate = CoolMethodWithEnumerable;
+            ForMet ownMethodDelegate = OwnMethod;
+            int[] res = coolMethodDelegate(array, k);
+            PrintArray(res);
+            int[] res2 = ownMethodDelegate(array, k);
+            PrintArray(res2);
         }
         static void InputArray(ref int[] array)
         {
