@@ -9,65 +9,30 @@ namespace lab1
 {
     internal class Program
     {
-        class Timer
+        internal class Timer
         {
-            public delegate void TimerDelegate();
-
-            private TimerDelegate timerDelegate;
-            private int interval;
-            private bool isRunning;
-
-            public Timer(TimerDelegate method, int intervalInSeconds)
+            public Timer(Action action, int t)
             {
-                timerDelegate = method;
-                interval = intervalInSeconds * 1000; // перетворюємо секунди на мілісекунди
-                isRunning = false;
-            }
-
-            public void Start()
-            {
-                if (isRunning)
+                Thread thread = new Thread(() =>
                 {
-                    Console.WriteLine("Timer is already running.");
-                    return;
-                }
-
-                isRunning = true;
-
-                Thread timerThread = new Thread(() =>
-                {
-                    while (isRunning)
+                    while (true)
                     {
-                        timerDelegate.Invoke(); // викликаємо делегат
-
-                        Thread.Sleep(interval);
+                        action.Invoke();
+                        Thread.Sleep(TimeSpan.FromSeconds(t));
                     }
                 });
-
-                timerThread.Start();
-            }
-
-            public void Stop()
-            {
-                isRunning = false;
+                thread.Start();
             }
         }
-
         static void Main(string[] args)
         {
-            Timer.TimerDelegate myDelegate = () =>
-            {
-                Console.WriteLine("Method executed at: " + DateTime.Now);
-            };
-
-            Timer myTimer = new Timer(myDelegate, 5); // викликати метод кожні 5 секунд
-
-            myTimer.Start();
-
-            // Дайте таймеру працювати протягом якогось часу
-            Thread.Sleep(20000);
-
-            myTimer.Stop(); // Зупиняємо таймер
+            Console.WriteLine("Введіть кількість секунд(періодичність роботи таймеру):");
+            int t = int.Parse(Console.ReadLine());
+            Timer timer = new Timer(() => SomeMethod(), t);
+        }
+        static void SomeMethod()
+        {
+                Console.WriteLine("Привіт!");
         }
     }
 }
