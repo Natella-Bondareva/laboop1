@@ -28,11 +28,11 @@ namespace lab1
         {
             Console.WriteLine("Введіть кількість секунд(періодичність роботи таймеру):");
             int t = int.Parse(Console.ReadLine());
-            Timer timer = new Timer(() => SomeMethod(), t);
+            Timer timer = new Timer(SomeMethod, t);
         }
         static void SomeMethod()
         {
-                Console.WriteLine("Привіт!");
+            Console.WriteLine("Привіт!");
         }
     }
 }
